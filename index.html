@@ -499,6 +499,36 @@ historyMenu.addEventListener("click", () => {
 
   alert(historyText);
 });
+// My Voices
+const voicesMenu = document.getElementById("voicesMenu");
+
+voicesMenu.addEventListener("click", () => {
+
+  const voice = document.getElementById("voice");
+
+  const choice = prompt(
+    "अपनी Voice चुनें:\n\n1 = Female Hindi Voice\n2 = Male Hindi Voice"
+  );
+
+  if (choice === "1") {
+
+    voice.value = "hi-IN-SwaraNeural";
+
+    alert("Female Hindi Voice select हो गई!");
+
+  } else if (choice === "2") {
+
+    voice.value = "hi-IN-MadhurNeural";
+
+    alert("Male Hindi Voice select हो गई!");
+
+  } else if (choice !== null) {
+
+    alert("कृपया 1 या 2 चुनें।");
+
+  }
+
+});
 </script>
 
 </body>
