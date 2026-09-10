@@ -219,17 +219,17 @@
       🔊 Text to Speech
     </div>
 
-    <div class="menu">
-      🕘 History
-    </div>
+   <div class="menu" id="historyMenu">
+  🕘 History
+</div>
 
-    <div class="menu">
-      🎙 My Voices
-    </div>
+<div class="menu" id="voicesMenu">
+  🎙 My Voices
+</div>
 
-    <div class="menu">
-      ⚙ Settings
-    </div>
+<div class="menu" id="settingsMenu">
+  ⚙ Settings
+</div>
 
   </div>
 
@@ -444,7 +444,19 @@ document.getElementById("generate").addEventListener("click", async () => {
     );
 
     audioBox.style.display = "block";
+const oldHistory = JSON.parse(
+  localStorage.getItem("vaaniHistory") || "[]"
+);
 
+oldHistory.unshift({
+  text: value,
+  voice: document.getElementById("voice").value
+});
+
+localStorage.setItem(
+  "vaaniHistory",
+  JSON.stringify(oldHistory.slice(0, 20))
+);
     status.textContent =
       "✅ MP3 तैयार है! अब सुन सकते हो या Download कर सकते हो।";
 
@@ -463,6 +475,29 @@ document.getElementById("generate").addEventListener("click", async () => {
 
   }
 
+});
+// Save generated speech to History
+const historyMenu = document.getElementById("historyMenu");
+
+historyMenu.addEventListener("click", () => {
+  alert("History button काम कर रहा है!");
+  const savedHistory = JSON.parse(
+    localStorage.getItem("vaaniHistory") || "[]"
+  );
+
+  if (savedHistory.length === 0) {
+    alert("अभी कोई History नहीं है। पहले एक voice generate करें।");
+    return;
+  }
+
+  let historyText = "🕘 VAANI AI HISTORY\n\n";
+
+  savedHistory.forEach((item, index) => {
+    historyText += `${index + 1}. ${item.text}\n`;
+    historyText += `Voice: ${item.voice}\n\n`;
+  });
+
+  alert(historyText);
 });
 </script>
 
