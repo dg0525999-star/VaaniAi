@@ -529,6 +529,86 @@ voicesMenu.addEventListener("click", () => {
   }
 
 });
+// Settings
+const settingsMenu = document.getElementById("settingsMenu");
+
+settingsMenu.addEventListener("click", () => {
+
+  const settingChoice = prompt(
+    "⚙️ SETTINGS\n\n" +
+    "1 = Default Voice बदलें\n" +
+    "2 = Voice Speed बदलें\n\n" +
+    "1 या 2 लिखें:"
+  );
+
+  if (settingChoice === "1") {
+
+    const voiceChoice = prompt(
+      "Default Voice चुनें:\n\n" +
+      "1 = Female Hindi Voice\n" +
+      "2 = Male Hindi Voice"
+    );
+
+    if (voiceChoice === "1") {
+
+      localStorage.setItem(
+        "defaultVoice",
+        "hi-IN-SwaraNeural"
+      );
+
+      document.getElementById("voice").value =
+        "hi-IN-SwaraNeural";
+
+      alert("Female Hindi Voice default set हो गई! ✅");
+
+    } else if (voiceChoice === "2") {
+
+      localStorage.setItem(
+        "defaultVoice",
+        "hi-IN-MadhurNeural"
+      );
+
+      document.getElementById("voice").value =
+        "hi-IN-MadhurNeural";
+
+      alert("Male Hindi Voice default set हो गई! ✅");
+
+    }
+
+  } else if (settingChoice === "2") {
+
+    const speedChoice = prompt(
+      "Voice Speed चुनें:\n\n" +
+      "1 = Slow\n" +
+      "2 = Normal\n" +
+      "3 = Fast"
+    );
+
+    const speed = document.getElementById("speed");
+
+    if (speedChoice === "1") {
+      speed.value = "slow";
+      localStorage.setItem("defaultSpeed", "slow");
+      alert("Slow speed set हो गई! ✅");
+
+    } else if (speedChoice === "2") {
+      speed.value = "normal";
+      localStorage.setItem("defaultSpeed", "normal");
+      alert("Normal speed set हो गई! ✅");
+
+    } else if (speedChoice === "3") {
+      speed.value = "fast";
+      localStorage.setItem("defaultSpeed", "fast");
+      alert("Fast speed set हो गई! ✅");
+    }
+
+  } else if (settingChoice !== null) {
+
+    alert("कृपया 1 या 2 चुनें।");
+
+  }
+
+});
 </script>
 
 </body>
