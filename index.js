@@ -19,7 +19,7 @@ app.use("/audio", express.static(audioFolder));
 
 app.post("/generate-speech", async (req, res) => {
   try {
-    const { text, speed } = req.body;
+    const { text, speed, voice } = req.body;
 
     if (!text || !text.trim()) {
       return res.status(400).json({
@@ -43,12 +43,12 @@ app.post("/generate-speech", async (req, res) => {
       }
     }
 
-    const tts = new EdgeTTS({
-      voice: "hi-IN-SwaraNeural",
-      lang: "hi-IN",
-      rate: rate,
-      outputFormat: "audio-24khz-48kbitrate-mono-mp3"
-    });
+   const tts = new EdgeTTS({
+    voice: voice || "hi-IN-SwaraNeural",
+    lang: "hi-IN",
+    rate: rate,
+    outputFormat: "audio-24khz-48kbitrate-mono-mp3"
+});
 
     await tts.ttsPromise(text, filePath);
 

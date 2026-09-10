@@ -267,17 +267,8 @@
 
           <select id="voice">
 
-            <option value="alloy">
-              AI Voice 1
-            </option>
-
-            <option value="echo">
-              AI Voice 2
-            </option>
-
-            <option value="fable">
-              AI Voice 3
-            </option>
+            <option value="hi-IN-SwaraNeural">Female Hindi Voice</option>
+<option value="hi-IN-MadhurNeural">Male Hindi Voice</option>
 
           </select>
 
@@ -426,9 +417,10 @@ document.getElementById("generate").addEventListener("click", async () => {
       },
 
       body: JSON.stringify({
-        text: value,
-        speed: speed.value
-      })
+    text: value,
+    speed: speed.value,
+    voice: document.getElementById("voice").value
+})
     });
 
     const data = await response.json();
