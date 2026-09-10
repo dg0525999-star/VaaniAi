@@ -701,6 +701,84 @@ settingsMenu.addEventListener("click", () => {
   }
 
 });
+// History Page
+const historyMenu = document.getElementById("historyMenu");
+const historyPage = document.getElementById("historyPage");
+const historyList = document.getElementById("historyList");
+const closeHistory = document.getElementById("closeHistory");
+const deleteHistory = document.getElementById("deleteHistory");
+
+historyMenu.addEventListener("click", () => {
+
+  const savedHistory = JSON.parse(
+    localStorage.getItem("vaaniHistory") || "[]"
+  );
+
+  historyList.innerHTML = "";
+
+  if (savedHistory.length === 0) {
+
+    historyList.innerHTML =
+      "<p>अभी कोई History नहीं है। पहले एक voice generate करें।</p>";
+
+  } else {
+
+    savedHistory.forEach((item, index) => {
+
+      const card = document.createElement("div");
+
+      card.className = "history-card";
+
+      card.innerHTML = `
+        <h3>${index + 1}. Generated Text</h3>
+        <p>${item.text}</p>
+        <small>🔊 Voice: ${item.voice}</small>
+      `;
+
+      card.addEventListener("click", () => {
+
+        document.getElementById("text").value = item.text;
+        document.getElementById("voice").value = item.voice;
+
+        historyPage.style.display = "none";
+        document.querySelector(".main").style.display = "block";
+
+      });
+
+      historyList.appendChild(card);
+
+    });
+
+  }
+
+  document.querySelector(".main").style.display = "none";
+  historyPage.style.display = "block";
+
+});
+
+closeHistory.addEventListener("click", () => {
+
+  historyPage.style.display = "none";
+  document.querySelector(".main").style.display = "block";
+
+});
+
+deleteHistory.addEventListener("click", () => {
+
+  const confirmDelete = confirm(
+    "क्या आप पूरी History delete करना चाहते हैं?"
+  );
+
+  if (confirmDelete) {
+
+    localStorage.removeItem("vaaniHistory");
+
+    historyList.innerHTML =
+      "<p>History साफ़ कर दी गई है।</p>";
+
+  }
+
+});
 </script>
 
 </body>
