@@ -290,7 +290,84 @@
       }
 
     }
+/* My Voices Page */
 
+.voices-page {
+  flex: 1;
+  padding: 40px;
+  width: 100%;
+}
+
+.voices-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.voices-header h1 {
+  margin: 0;
+}
+
+.voice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 750px;
+}
+
+.voice-card {
+  background: #111827;
+  border: 1px solid #263041;
+  border-radius: 15px;
+  padding: 25px;
+  transition: 0.2s;
+}
+
+.voice-card:hover {
+  transform: translateY(-4px);
+  border-color: #8b5cf6;
+}
+
+.voice-card h2 {
+  margin-top: 0;
+}
+
+.voice-card p {
+  color: #b6c0d0;
+  line-height: 1.5;
+}
+
+.preview-voice,
+.select-voice {
+  border: none;
+  padding: 11px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 8px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.preview-voice {
+  background: #252c3a;
+  color: white;
+}
+
+.select-voice {
+  background: #8b5cf6;
+  color: white;
+}
+
+.selected-voice-status {
+  margin-top: 25px;
+  max-width: 750px;
+  padding: 15px;
+  border-radius: 10px;
+  background: #111827;
+  border: 1px solid #263041;
+  color: #b6c0d0;
+}
   </style>
 
 </head>
@@ -357,6 +434,100 @@
   >
     🗑 Clear History
   </button>
+
+</div>
+<!-- My Voices Panel -->
+
+<div
+  class="voices-page"
+  id="voicesPage"
+  style="display: none;"
+>
+
+  <div class="voices-header">
+
+    <h1>🎙 My Voices</h1>
+
+    <button
+      id="closeVoices"
+      class="clear"
+    >
+      ← Back
+    </button>
+
+  </div>
+
+
+  <div class="voice-grid">
+
+
+    <div
+      class="voice-card"
+      data-voice="hi-IN-SwaraNeural"
+    >
+
+      <h2>👩 Female Hindi Voice</h2>
+
+      <p>
+        Natural और clear Hindi female voice.
+      </p>
+
+      <button
+        class="preview-voice"
+        data-preview="नमस्ते दोस्तों, वाणी ए आई में आपका स्वागत है।"
+      >
+        ▶️ Preview
+      </button>
+
+      <button
+        class="select-voice"
+        data-voice="hi-IN-SwaraNeural"
+      >
+        Select Voice
+      </button>
+
+    </div>
+
+
+
+    <div
+      class="voice-card"
+      data-voice="hi-IN-MadhurNeural"
+    >
+
+      <h2>👨 Male Hindi Voice</h2>
+
+      <p>
+        Natural और clear Hindi male voice.
+      </p>
+
+      <button
+        class="preview-voice"
+        data-preview="नमस्ते दोस्तों, वाणी ए आई में आपका स्वागत है।"
+      >
+        ▶️ Preview
+      </button>
+
+      <button
+        class="select-voice"
+        data-voice="hi-IN-MadhurNeural"
+      >
+        Select Voice
+      </button>
+
+    </div>
+
+
+  </div>
+
+
+  <div
+    class="selected-voice-status"
+    id="selectedVoiceStatus"
+  >
+    कोई Voice selected नहीं है।
+  </div>
+
 
 </div>
   <!-- Main -->
@@ -719,34 +890,115 @@ deleteHistory.addEventListener("click", () => {
   }
 
 });
-// My Voices
+// My Voices Professional Page
+
 const voicesMenu = document.getElementById("voicesMenu");
+const voicesPage = document.getElementById("voicesPage");
+const closeVoices = document.getElementById("closeVoices");
+const mainPage = document.querySelector(".main");
+const selectedVoiceStatus =
+  document.getElementById("selectedVoiceStatus");
 
 voicesMenu.addEventListener("click", () => {
 
-  const voice = document.getElementById("voice");
+  mainPage.style.display = "none";
+  historyPage.style.display = "none";
+  voicesPage.style.display = "block";
 
-  const choice = prompt(
-    "अपनी Voice चुनें:\n\n1 = Female Hindi Voice\n2 = Male Hindi Voice"
-  );
+  const currentVoice =
+    document.getElementById("voice").value;
 
-  if (choice === "1") {
+  if (currentVoice === "hi-IN-SwaraNeural") {
 
-    voice.value = "hi-IN-SwaraNeural";
+    selectedVoiceStatus.textContent =
+      "✅ Current Voice: Female Hindi Voice";
 
-    alert("Female Hindi Voice select हो गई!");
+  } else if (currentVoice === "hi-IN-MadhurNeural") {
 
-  } else if (choice === "2") {
-
-    voice.value = "hi-IN-MadhurNeural";
-
-    alert("Male Hindi Voice select हो गई!");
-
-  } else if (choice !== null) {
-
-    alert("कृपया 1 या 2 चुनें।");
+    selectedVoiceStatus.textContent =
+      "✅ Current Voice: Male Hindi Voice";
 
   }
+
+});
+
+
+closeVoices.addEventListener("click", () => {
+
+  voicesPage.style.display = "none";
+  mainPage.style.display = "block";
+
+});
+
+
+document.querySelectorAll(".select-voice").forEach((button) => {
+
+  button.addEventListener("click", () => {
+
+    const selectedVoice =
+      button.dataset.voice;
+
+    document.getElementById("voice").value =
+      selectedVoice;
+
+    localStorage.setItem(
+      "defaultVoice",
+      selectedVoice
+    );
+
+    if (selectedVoice === "hi-IN-SwaraNeural") {
+
+      selectedVoiceStatus.textContent =
+        "✅ Female Hindi Voice selected and saved!";
+
+    } else {
+
+      selectedVoiceStatus.textContent =
+        "✅ Male Hindi Voice selected and saved!";
+
+    }
+
+  });
+
+});
+// Voice Preview
+
+document.querySelectorAll(".preview-voice").forEach((button) => {
+
+  button.addEventListener("click", (event) => {
+
+    event.stopPropagation();
+
+    const previewText = button.dataset.preview;
+
+    const voiceName =
+      button.closest(".voice-card").dataset.voice;
+
+    const previewAudio =
+      new SpeechSynthesisUtterance(previewText);
+
+    previewAudio.lang = "hi-IN";
+
+    const voices = speechSynthesis.getVoices();
+
+    const selectedBrowserVoice = voices.find((voice) =>
+      voice.lang.startsWith("hi") &&
+      (
+        voice.name.includes("Swara") ||
+        voice.name.includes("Madhur")
+      )
+    );
+
+    if (selectedBrowserVoice) {
+      previewAudio.voice = selectedBrowserVoice;
+    }
+
+    previewAudio.rate = 1;
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(previewAudio);
+
+  });
 
 });
 // Settings
