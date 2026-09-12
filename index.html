@@ -630,10 +630,31 @@ historyMenu.addEventListener("click", () => {
       card.className = "history-card";
 
       card.innerHTML = `
-        <h3>${index + 1}. Generated Text</h3>
-        <p>${item.text}</p>
-        <small>🔊 Voice: ${item.voice}</small>
-      `;
+  <h3>${index + 1}. Generated Text</h3>
+  <p>${item.text}</p>
+  <small>🔊 Voice: ${item.voice}</small>
+
+  ${
+    item.audioUrl
+      ? `<br><button class="play-history">▶️ Play Audio</button>`
+      : `<p><small>पुराने History item में audio उपलब्ध नहीं है।</small></p>`
+  }
+`;
+const playButton = card.querySelector(".play-history");
+
+if (playButton) {
+
+  playButton.addEventListener("click", (event) => {
+
+    event.stopPropagation();
+
+    const historyAudio = new Audio(item.audioUrl);
+
+    historyAudio.play();
+
+  });
+
+}
 
       card.addEventListener("click", () => {
 
