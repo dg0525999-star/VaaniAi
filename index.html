@@ -961,11 +961,11 @@ document.querySelectorAll(".select-voice").forEach((button) => {
   });
 
 });
-// Voice Preview
+// Voice Preview using Vaani AI Server
 
 document.querySelectorAll(".preview-voice").forEach((button) => {
 
-  button.addEventListener("click", (event) => {
+  button.addEventListener("click", async (event) => {
 
     event.stopPropagation();
 
@@ -974,29 +974,61 @@ document.querySelectorAll(".preview-voice").forEach((button) => {
     const voiceName =
       button.closest(".voice-card").dataset.voice;
 
-    const previewAudio =
-      new SpeechSynthesisUtterance(previewText);
+    const originalText = button.textContent;
 
-    previewAudio.lang = "hi-IN";
+    button.disabled = true;
+    button.textContent = "⏳ Loading...";
 
-    const voices = speechSynthesis.getVoices();
+    try {
 
-    const selectedBrowserVoice = voices.find((voice) =>
-      voice.lang.startsWith("hi") &&
-      (
-        voice.name.includes("Swara") ||
-        voice.name.includes("Madhur")
-      )
-    );
+      const response = await fetch("/generate-speech", {
+        method: "POST",
 
-    if (selectedBrowserVoice) {
-      previewAudio.voice = selectedBrowserVoice;
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          text: previewText,
+          voice: voiceName,
+          speed: 1
+        })
+
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Preview generate नहीं हुई"
+        );
+      }
+
+      const previewAudio =
+        new Audio(data.audioUrl);
+
+      previewAudio.play();
+
+      previewAudio.addEventListener("ended", () => {
+
+        button.disabled = false;
+        button.textContent = originalText;
+
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Preview चलाने में समस्या हुई: " +
+        error.message
+      );
+
+      button.disabled = false;
+      button.textContent = originalText;
+
     }
-
-    previewAudio.rate = 1;
-
-    speechSynthesis.cancel();
-    speechSynthesis.speak(previewAudio);
 
   });
 
