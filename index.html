@@ -575,9 +575,9 @@ const oldHistory = JSON.parse(
 
 oldHistory.unshift({
   text: value,
-  voice: document.getElementById("voice").value
+  voice: document.getElementById("voice").value,
+  audioUrl: data.audioUrl
 });
-
 localStorage.setItem(
   "vaaniHistory",
   JSON.stringify(oldHistory.slice(0, 20))
