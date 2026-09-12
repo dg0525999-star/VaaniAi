@@ -644,18 +644,35 @@ const playButton = card.querySelector(".play-history");
 
 if (playButton) {
 
+  const historyAudio = new Audio(item.audioUrl);
+
   playButton.addEventListener("click", (event) => {
 
     event.stopPropagation();
 
-    const historyAudio = new Audio(item.audioUrl);
+    if (historyAudio.paused) {
 
-    historyAudio.play();
+      historyAudio.play();
+
+      playButton.textContent = "⏸ Pause Audio";
+
+    } else {
+
+      historyAudio.pause();
+
+      playButton.textContent = "▶️ Play Audio";
+
+    }
+
+  });
+
+  historyAudio.addEventListener("ended", () => {
+
+    playButton.textContent = "▶️ Play Audio";
 
   });
 
 }
-
       card.addEventListener("click", () => {
 
         document.getElementById("text").value = item.text;
